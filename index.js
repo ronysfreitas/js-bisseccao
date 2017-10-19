@@ -26,6 +26,8 @@ document.getElementById("calcular").addEventListener('click', function(){
     var xA = parseInt(document.getElementById("a").value);
     var xB = parseInt(document.getElementById("b").value);
 
+    var fxReal = parseInt(document.getElementById("fxReal").value);
+
     var execucao = 1;
     var maiorErro = true;
 
@@ -41,7 +43,7 @@ document.getElementById("calcular").addEventListener('click', function(){
 
             var fXN = exeExpressao(expressao, xN);
         
-            if(fXN == 0 || (xB - xA) < 0.0001){
+            if(fXN == fxReal || (xB - xA) < 0.0001){
                 maiorErro = false;
                 resultado = "<hr/><p><strong>" +
                             "Resultado: " + xN + "<br/>" +
@@ -64,8 +66,8 @@ document.getElementById("calcular").addEventListener('click', function(){
 
             result.innerHTML += linha;
         
-            xA = ((fXA > 0 && fXN > 0) || (fXA < 0 && fXN < 0)) ? xN : xA;
-            xB = ((fXB > 0 && fXN > 0) || (fXB < 0 && fXN < 0)) ? xN : xB;  
+            xA = ((fXA > fxReal && fXN > fxReal) || (fXA < fxReal && fXN < fxReal)) ? xN : xA;
+            xB = ((fXB > fxReal && fXN > fxReal) || (fXB < fxReal && fXN < fxReal)) ? xN : xB;  
             
             execucao++;
         
