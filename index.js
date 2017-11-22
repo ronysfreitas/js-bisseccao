@@ -1,9 +1,20 @@
+var E = 2.718281828459045235360287;
+var PI = 3.14159265359;
+
 function POW(x, y){
     var n = x;
     for(i = 1; i < y; ++i){
         n *= x;  
     }
     return n;
+}
+
+function LOG(x, base){
+    return Math.log(x) / Math.log(base);
+}
+
+function LN(x){
+    return LOG(x, E);
 }
 
 function exeExpressao(expressao, X){
@@ -26,6 +37,8 @@ document.getElementById("calcular").addEventListener('click', function(){
     var xA = parseInt(document.getElementById("a").value);
     var xB = parseInt(document.getElementById("b").value);
 
+    var precisao = parseFloat(document.getElementById("precisao").value);
+
     var fxReal = parseInt(document.getElementById("fxReal").value);
 
     var execucao = 1;
@@ -43,7 +56,7 @@ document.getElementById("calcular").addEventListener('click', function(){
 
             var fXN = exeExpressao(expressao, xN);
         
-            if(fXN == fxReal || (xB - xA) < 0.0001){
+            if(fXN == fxReal || (xB - xA) < precisao){
                 maiorErro = false;
                 resultado = "<hr/><p><strong>" +
                             "Resultado: " + xN + "<br/>" +
