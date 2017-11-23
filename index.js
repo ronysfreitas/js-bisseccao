@@ -34,8 +34,8 @@ document.getElementById("calcular").addEventListener('click', function(){
 
     var expressao = document.getElementById("expressao").value;
 
-    var xA = parseInt(document.getElementById("a").value);
-    var xB = parseInt(document.getElementById("b").value);
+    var xA = parseFloat(document.getElementById("a").value);
+    var xB = parseFloat(document.getElementById("b").value);
 
     var precisao = parseFloat(document.getElementById("precisao").value);
 
