@@ -1,5 +1,6 @@
 var E = 2.718281828459045235360287;
 var PI = 3.14159265359;
+var casas = 6;
 
 function POW(x, y){
     var n = x;
@@ -17,6 +18,10 @@ function LN(x){
     return LOG(x, E);
 }
 
+function roundValue(value){
+    return parseFloat(value.toFixed(casas));
+}
+
 function exeExpressao(expressao, X){
     return eval(expressao.trim().toUpperCase());
 }
@@ -32,6 +37,10 @@ document.getElementById("limpar").addEventListener('click', function(){
 
 document.getElementById("calcular").addEventListener('click', function(){
 
+    var type = document.getElementsByName("type");
+
+    casas = parseInt(document.getElementById("casas").value);
+    
     var expressao = document.getElementById("expressao").value;
 
     var xA = parseFloat(document.getElementById("a").value);
@@ -49,24 +58,44 @@ document.getElementById("calcular").addEventListener('click', function(){
     var resultado = "";
 
     do {
-            var xN = (xB + xA) / 2;
+            var fXA = roundValue(exeExpressao(expressao, xA));
+            var fXB = roundValue(exeExpressao(expressao, xB));
 
-            var fXA = exeExpressao(expressao, xA);
-            var fXB = exeExpressao(expressao, xB);
-
-            var fXN = exeExpressao(expressao, xN);
-        
-            if(fXN == fxReal || (xB - xA) < precisao){
-                maiorErro = false;
-                resultado = "<hr/><p><strong>" +
-                            "Resultado: " + xN + "<br/>" +
-                            "Erro: " + (xB - xA) + "<br/>" +
-                            "Iterações: " + execucao + "<br/>" +
-                            "</strong></p>";
-
-                resultTxt.innerHTML = resultado;
+            if(type[0].checked == true){
+                // Bissecção
+                var xN = roundValue((xB + xA) / 2);
+            } else{
+                // Falsa Posição
+                var xN = roundValue((xA*fXB - xB*fXA) / (fXB - fXA));
             }
-        
+
+            var fXN = roundValue(exeExpressao(expressao, xN));
+
+            if(type[0].checked == true){
+                // Bissecção
+                if(fXN == fxReal || (xB - xA) < precisao){
+                    maiorErro = false;
+                    resultado = "<hr/><p><strong>" +
+                                "Resultado: " + xN + "<br/>" +
+                                "Erro: " + (xB - xA) + "<br/>" +
+                                "Iterações: " + execucao + "<br/>" +
+                                "</strong></p>";
+    
+                    resultTxt.innerHTML = resultado;
+                }
+            } else{
+                // Falsa Posição
+                if(fXN == fxReal || Math.abs(fXN) < precisao){
+                    maiorErro = false;
+                    resultado = "<hr/><p><strong>" +
+                                "Resultado: " + xN + "<br/>" +
+                                "Erro: " + (xB - xA) + "<br/>" +
+                                "Iterações: " + execucao + "<br/>" +
+                                "</strong></p>";
+    
+                    resultTxt.innerHTML = resultado;
+                }
+            }
         
             var linha = "<tr><td>" + execucao + "</td><td>" +
                     xA + "</td><td>" + 
@@ -75,7 +104,7 @@ document.getElementById("calcular").addEventListener('click', function(){
                     fXB + "</td><td>" + 
                     xN + "</td><td>" +
                     fXN + "</td><td>" + 
-                    (xB - xA) + "</td></tr>";
+                    roundValue((xB - xA)) + "</td></tr>";
 
             result.innerHTML += linha;
         
